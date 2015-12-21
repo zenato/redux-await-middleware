@@ -1,6 +1,6 @@
 {
   "name": "redux-await-middleware",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Await(Promise) middleware for Redux",
   "main": "dist/index.js",
   "files": [
@@ -22,7 +22,9 @@
     "await",
     "promise",
     "middleware",
-    "redux-middleware"
+    "redux-middleware",
+    "flux",
+    "flux-standard-action"
   ],
   "author": "Yeongjin Lee <yeongjinnn@gmail.com>",
   "license": "MIT",
@@ -35,6 +37,7 @@
     "chai": "^3.4.1",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "1.0.2",
+    "flux-standard-action": "^0.6.0",
     "mocha": "^2.2.5",
     "rimraf": "^2.4.4"
   }

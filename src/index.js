@@ -1,24 +1,22 @@
-export default function awaitMiddleware() {
+import { isFSA } from 'flux-standard-action';
+
+function isPromise(val) {
+  return val && typeof val.then === 'function';
+}
+
+export default function awaitMiddleware({ dispatch }) {
   return next => action => {
-    const { promise, type, ...rest } = action;
+    if (!isFSA(action)) {
+      return isPromise(action)
+        ? action.then(dispatch)
+        : next(action);
+    }
 
-    if (!promise) return next(action);
-
-    const SUCCESS = type;
-    const REQUEST = type + '_REQUEST';
-    const FAILURE = type + '_FAILURE';
-
-    next({ ...rest, type: REQUEST });
-
-    return promise
-      .then(res => {
-        next({ ...rest, res, type: SUCCESS });
-        return true;
-      })
-      .catch(error => {
-        next({ ...rest, error, type: FAILURE });
-        console.log(error);
-        return false;
-      });
+    return isPromise(action.payload)
+      ? action.payload.then(
+        result => dispatch({ ...action, payload: result }),
+        error => dispatch({ ...action, payload: error, error: true })
+      )
+      : next(action);
   };
 }
